@@ -26,9 +26,11 @@ public class User implements UserDetails {
     @NotBlank(message = "Password is require")
     private String password;
     @NotBlank(message = "Phone number is require")
-    private String phone_number;
+    private String phoneNumber;
     private String role;
-    // private List<Booking> bookings;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Booking> bookings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

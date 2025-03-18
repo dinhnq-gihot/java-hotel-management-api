@@ -3,6 +3,7 @@ package com.example.hotel_management.entity;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -13,24 +14,45 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate check_in_date;
-    private LocalDate check_out_date;
+    @NotNull(message = "check in date is required")
+    private LocalDate checkInDate;
+    @Future(message = "check out date must be in the future")
+    private LocalDate checkOutDate;
 
-    private int num_of_adults;
-    private int num_of_children;
-    private int total_num_of_guest;
+    @Min(value = 1, message = "Number of adults must not be less than 1")
+    private int numOfAdults;
+    @Min(value = 0, message = "Number of children must not be less than 0")
+    private int numOfChildren;
+    private int totalNumOfGuests;
     private String bookingConfirmationCode;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    // private Room room
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     @Override
     public String toString() {
-        return "Booking [id=" + id + ", check_in_date=" + check_in_date + ", check_out_date=" + check_out_date
-                + ", num_of_adults=" + num_of_adults + ", num_of_children=" + num_of_children + ", total_num_of_guest="
-                + total_num_of_guest + ", bookingConfirmationCode=" + bookingConfirmationCode + ", user=" + user + "]";
+        return "Booking [id=" + id + ", checkInDate=" + checkInDate + ", checkOutDate=" + checkOutDate
+                + ", numOfAdults=" + numOfAdults + ", numOfChildren=" + numOfChildren + ", totalNumOfGuest="
+                + totalNumOfGuests + ", bookingConfirmationCode=" + bookingConfirmationCode + ", user=" + user
+                + "]";
     }
 
+    public void calculateTotalNumberOfGuests() {
+        this.totalNumOfGuests = this.numOfAdults + this.numOfChildren;
+    }
+
+    public void setNumOfAdults(int num) {
+        this.numOfAdults = num;
+        calculateTotalNumberOfGuests();
+    }
+
+    public void setNumOfChildren(int num) {
+        this.numOfChildren = num;
+        calculateTotalNumberOfGuests();
+    }
 }
