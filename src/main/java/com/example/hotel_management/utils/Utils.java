@@ -2,7 +2,6 @@ package com.example.hotel_management.utils;
 
 import java.security.SecureRandom;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.example.hotel_management.dto.BookingDTO;

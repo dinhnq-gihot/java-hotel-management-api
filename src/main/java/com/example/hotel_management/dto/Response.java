@@ -20,7 +20,9 @@ public class Response {
     private UserDTO user;
     private RoomDTO room;
     private BookingDTO booking;
+
     private List<UserDTO> userList;
     private List<RoomDTO> roomList;
+    private List<String> roomTypeList;
     private List<BookingDTO> bookingList;
 }

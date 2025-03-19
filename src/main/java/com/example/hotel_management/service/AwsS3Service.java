@@ -10,12 +10,10 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.hotel_management.exception.OurException;
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Basic;
 
 @Service
 public class AwsS3Service {
@@ -28,7 +26,7 @@ public class AwsS3Service {
     private String awsS3SecretKey;
 
     public String saveImageToS3(MultipartFile photo) {
-        String s3LocationImage = null;
+        // String s3LocationImage = null;
 
         try {
             String s3Filename = photo.getOriginalFilename();
@@ -44,6 +42,7 @@ public class AwsS3Service {
 
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, s3Filename, inputStream, metadata);
             s3Client.putObject(putObjectRequest);
+
             return "https://" + bucketName + ".s3.amazonaws.com/" + s3Filename;
         } catch (Exception e) {
             e.printStackTrace();
